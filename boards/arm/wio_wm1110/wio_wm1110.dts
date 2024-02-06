@@ -1,0 +1,137 @@
+/*
+ * Copyright (c) 2024 Phil Erwin
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+
+/dts-v1/;
+#include <nordic/nrf52840_qiaa.dtsi>
+#include "wio_wm1110-pinctrl.dtsi"
+
+/ {
+	model = "Wio WM1110";
+	compatible = "seeed,wio-wm1110";
+
+	chosen {
+		zephyr,console        = &uart0;
+		zephyr,sram           = &sram0;
+		zephyr,flash          = &flash0;
+		zephyr,code-partition = &code_partition;
+	};
+
+	leds {
+		compatible = "gpio-leds";
+		ledg: led_g {
+			gpios = <&gpio0 13 GPIO_ACTIVE_LOW>;
+			label = "Green LED";
+		};
+		ledr: led_r {
+			gpios = <&gpio0 14 GPIO_ACTIVE_LOW>;
+			label = "Red LED";
+		};
+
+		pe4259ctrl: pe4259_ctrl {
+			gpios = <&gpio1 6 (GPIO_ACTIVE_LOW)>;
+			label = "PE4259 CTRL";
+		};
+		pe4259vdd: pe4259_vdd {
+			gpios = <&gpio1 2 (GPIO_ACTIVE_LOW)>;
+			label = "PE4259 VDD";
+		};
+	};
+
+	aliases {
+		accel0 = &lis3dh;
+		ledg   = &ledg;
+		ledr   = &ledr;
+		lora0 = &lora;
+		};
+};
+
+&flash0 {
+	partitions {
+		compatible = "fixed-partitions";
+		#address-cells = <1>;
+		#size-cells = <1>;
+
+		boot_partition: partition@0 {
+			label = "uf2";
+			reg = <0x00000000 DT_SIZE_K(16)>;
+			read-only;
+		};
+
+		code_partition: partition@4000 {
+			label = "code";
+			reg = <0x4000 DT_SIZE_K(512-16)>;
+			read-only;
+		};
+	};
+};
+
+
+/* Aux Debug/Logging Console */
+&uart0 {
+	compatible = "nordic,nrf-uart";
+	status = "okay";
+	current-speed = <460800>;
+	pinctrl-0 = <&uart0_default>;
+	pinctrl-1 = <&uart0_sleep>;
+	pinctrl-names = "default", "sleep";
+};
+
+&gpiote {
+	status = "okay";
+/*	interrupts = <6 0>; */
+};
+
+&gpio0 {
+       status = "okay";
+       };
+
+&gpio1 {
+       status = "okay";
+       };
+
+&spi0 {
+	compatible = "nordic,nrf-spi";
+
+	status = "okay";
+
+	pinctrl-0 = <&spi0_default>;
+	pinctrl-1 = <&spi0_sleep>;
+	pinctrl-names = "default", "sleep";
+
+	cs-gpios = <&gpio1 12 (GPIO_ACTIVE_LOW)>;  /* does this need to be the same as NSS below ? */
+
+	lora: lr1110@0 {
+		compatible = "semtech,lr1110";
+		reg = <0>;
+		label = "lr1110";
+		reset-gpios = <&gpio1 10 GPIO_ACTIVE_LOW>;
+		busy-gpios = <&gpio1 11 0>;
+		/*antenna-enable-gpios = <&gpio1 7 0>;*/
+		dio1-gpios = <&gpio0 29 0>;                      /* documented as DIO9 in the LR1110 hardware spec */
+		nss-gpios = <&gpio1 12 (GPIO_ACTIVE_LOW)>;
+		radio-enable-gpios = <&gpio1 0 0>;
+		spi-max-frequency = <4000000>;
+		dio2-tx-enable;
+/*		vdd-sensor-en-gpios = <&gpio1 11 0>; */
+	};
+};
+
+&i2c1 {
+	compatible = "nordic,nrf-twim";
+	status = "okay";
+
+	pinctrl-0 = <&i2c1_default>;
+	pinctrl-1 = <&i2c1_sleep>;
+	pinctrl-names = "default", "sleep";
+
+	lis3dh: lis3dh@19 {
+		compatible = "st,lis3dh", "st,lis2dh";
+		reg = <0x19>;
+		/* only INT1 is in use */
+		irq-gpios = <&gpio0 6 GPIO_ACTIVE_HIGH>;
+		anym-on-int1;
+	};
+};

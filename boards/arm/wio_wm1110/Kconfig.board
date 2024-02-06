@@ -1,0 +1,7 @@
+# Copyright (c) 2023 Joel Guittet
+# Wio Terminal board configuration
+
+# SPDX-License-Identifier: Apache-2.0
+
+config BOARD_WIO_WM1110
+	bool "Wio WM1110"

@@ -1,0 +1,8 @@
+# Copyright (c) 2024 Phil Erwin
+# Wio Wm1110 Board Configuration
+
+# SPDX-License-Identifier: Apache-2.0
+
+config BOARD
+	default "wio_wm1110"
+	depends on BOARD_WIO_WM1110
