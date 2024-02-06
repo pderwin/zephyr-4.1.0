@@ -1,0 +1,56 @@
+LB Trace-like trace tool
+
+Configuration
+-------------
+
+Can use:
+        - a DRAM ring for high-speed data collection
+and/or:
+        - gpio's to 'stream' trace data to gpios'
+
+Select these in trace_internal.h.  Setting USE_RING and/or USE_GPIO
+
+
+Configure Ring Buffer
+---------------------
+
+The only configuration for this mode is the size of the DRAM ring.  This is set in trace_internal.h as well.  RING_BUFFER_SIZ sets
+the number of bytes of data that are stored.
+
+Configure GPIO Mode
+-------------------
+
+The code is built to use 3 GPIOs for data streaming.  One clock wire, and two data pins.  There are two other side-band GPIOs that
+are handy to have: GPIO_IRQ I typically take low for the duration of pl190_vic_isr().  This gives a clear indication of interrupt
+activity.  Also GPIO_TRIGGER is nice to trigger the logic analyzer to stop collecting trace data.
+
+
+Usage
+-----
+
+The trace collection is enabled by calling the macro TRACE_ARM().  Data is then stored with calls to TRACE(tag), TRACE1(tag,arg0),
+TRACE2(tag, arg0, arg1), etc.  Data collection is stopped by calling TRACE_TRIGGER().
+
+The tag values are defined in include/trace.h.
+
+When using the ring mode, data is dumped by calling TRACE_DUMP().  The binary trace data is formatted to English by routines in
+drivers/trace/packet.c.
+
+When using GPIO mode, the data is formatted by some offline parser.  I will export the data using VCD mode from the Saleae logic
+analyzer, and then use ~erwin/tools/parseTrace.  This makes an intermediate file which is then further parsed by ~erwin/tools/parseLst.
+
+
+Example
+-------
+
+   #include <trace.h>
+
+   abc()
+   {
+        TRACE_ARM();
+
+        TRACE1(TRACE_ABC_ENTRY, __builtin_return_address(0));
+
+        TRACE_TRIGGER();
+        TRACE_DUMP();
+   }

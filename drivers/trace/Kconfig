@@ -1,0 +1,18 @@
+# Kconfig - Misc network drivers configuration options
+# SPDX-License-Identifier: Apache-2.0
+
+config LXK_TRACE
+	bool "Jake Trace Driver"
+	help
+	  Driver for Jake Trace tool
+
+config LXK_TRACE_SWAPS
+	bool "Trace process swaps"
+	help
+	  Driver for Jake Trace tool
+	select THREAD_NAME
+
+config LXK_TRACE_UART
+	bool "Trace emitted on UART pin"
+	help
+	  Trace data emitted on UART pin
