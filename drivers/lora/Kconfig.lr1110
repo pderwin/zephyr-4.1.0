@@ -1,0 +1,12 @@
+#
+# Copyright (c) 2019 Manivannan Sadhasivam
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+menuconfig LORA_LR1110
+	bool "Semtech LR-series driver"
+	select HAS_SEMTECH_RADIO_DRIVERS
+	depends on SPI
+	help
+	  Enable LoRa driver for Semtech LR1110.
