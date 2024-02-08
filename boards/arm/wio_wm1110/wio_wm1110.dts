@@ -38,13 +38,29 @@
 			gpios = <&gpio1 2 (GPIO_ACTIVE_LOW)>;
 			label = "PE4259 VDD";
 		};
+
+		d0: d0 {
+			gpios = <&gpio0 22 (GPIO_ACTIVE_LOW)>;
+			label = "D0";
+		};
+		d6: d6 {
+			gpios = <&gpio1 4 (GPIO_ACTIVE_LOW)>;
+			label = "D6";
+		};
+
+		d7: d7 {
+			gpios = <&gpio1 3 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
+			label = "D7";
+		};
 	};
 
 	aliases {
-		accel0 = &lis3dh;
-		ledg   = &ledg;
-		ledr   = &ledr;
-		lora0 = &lora;
+		accel0                = &lis3dh;
+		ledg                  = &ledg;
+		ledr                  = &ledr;
+		lora0                 = &lora;
+		pir0		      = &d7;
+		temperature-humidity0 = &sht4x;
 		};
 };
 
@@ -79,6 +95,14 @@
 	pinctrl-names = "default", "sleep";
 };
 
+&uart1 {
+	status = "okay";
+	current-speed = <921600>;
+	pinctrl-0 = <&uart1_default>;
+	pinctrl-1 = <&uart1_sleep>;
+	pinctrl-names = "default", "sleep";
+};
+
 &gpiote {
 	status = "okay";
 /*	interrupts = <6 0>; */
@@ -110,7 +134,7 @@
 		reset-gpios = <&gpio1 10 GPIO_ACTIVE_LOW>;
 		busy-gpios = <&gpio1 11 0>;
 		/*antenna-enable-gpios = <&gpio1 7 0>;*/
-		dio1-gpios = <&gpio0 29 0>;                      /* documented as DIO9 in the LR1110 hardware spec */
+		dio1-gpios = <&gpio1 8 0>;  /* This is the IRQ gpio.  Documented as DIO9 in the LR1110 hardware spec */
 		nss-gpios = <&gpio1 12 (GPIO_ACTIVE_LOW)>;
 		radio-enable-gpios = <&gpio1 0 0>;
 		spi-max-frequency = <4000000>;
@@ -131,7 +155,13 @@
 		compatible = "st,lis3dh", "st,lis2dh";
 		reg = <0x19>;
 		/* only INT1 is in use */
-		irq-gpios = <&gpio0 6 GPIO_ACTIVE_HIGH>;
+		irq-gpios = <&gpio0 11 GPIO_ACTIVE_HIGH>;
 		anym-on-int1;
+	};
+
+	sht4x: sht4x@44 {
+		compatible = "sensirion,sht4x";
+		repeatability = <0>;
+		reg = <0x44>;
 	};
 };
