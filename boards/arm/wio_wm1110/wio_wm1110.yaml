@@ -7,18 +7,18 @@ ram:    256
 flash:  1024
 
 toolchain:
-	- zephyr
-	- gnuarmemb
-	- xtools
+  - zephyr
+  - gnuarmemb
+  - xtools
 supported:
-	- adc
-	- counter
-	- dma
-	- gpio
-	- i2c
-	- pwm
-	- spi
-	- usb_cdc
-	- usb_device
-	- watchdog
+  - adc
+  - counter
+  - dma
+  - gpio
+  - i2c
+  - pwm
+  - spi
+  - usb_cdc
+  - usb_device
+  - watchdog
 vendor: seeed
