@@ -44,22 +44,24 @@
 			label = "D0";
 		};
 		d6: d6 {
-			gpios = <&gpio1 4 (GPIO_ACTIVE_LOW)>;
+			gpios = <&gpio1 4 ( GPIO_PULL_UP )>;
 			label = "D6";
 		};
 
 		d7: d7 {
-			gpios = <&gpio1 3 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
+			gpios = <&gpio1 3 ( GPIO_PULL_UP )>;
 			label = "D7";
 		};
 	};
 
 	aliases {
 		accel0                = &lis3dh;
+		driveway-sensor       = &d6;
 		ledg                  = &ledg;
 		ledr                  = &ledr;
 		lora0                 = &lora;
 		pir0		      = &d7;
+		rng0                  = &rng;
 		temperature-humidity0 = &sht4x;
 		};
 };
