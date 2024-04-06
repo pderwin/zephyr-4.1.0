@@ -11,6 +11,7 @@
 #include <zephyr/drivers/clock_control/nrf_clock_control.h>
 #include <zephyr/drivers/timer/system_timer.h>
 #include <zephyr/drivers/timer/nrf_rtc_timer.h>
+#include <zephyr/drivers/trace.h>
 #include <zephyr/sys/util.h>
 #include <zephyr/sys_clock.h>
 #include <zephyr/sys/barrier.h>
@@ -752,6 +753,11 @@ static int sys_clock_driver_init(void)
 
 	nrfy_rtc_task_trigger(RTC, NRF_RTC_TASK_CLEAR);
 	nrfy_rtc_task_trigger(RTC, NRF_RTC_TASK_START);
+
+	/*
+	 * nice trigger for the logic analyzer to synchronize time stamps
+	 */
+	TRACE(TAG_SYS_CLOCK_START);
 
 	int_mask = BIT_MASK(CHAN_COUNT);
 	if (CONFIG_NRF_RTC_TIMER_USER_CHAN_COUNT) {
