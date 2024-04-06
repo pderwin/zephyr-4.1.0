@@ -80,10 +80,14 @@
 
 		code_partition: partition@4000 {
 			label = "code";
-			reg = <0x4000 DT_SIZE_K(512-16)>;
+			reg = <0x4000 DT_SIZE_K(512-16-16)>;
 			read-only;
 		};
-	};
+
+		storage_partition: partition@7c000 {
+			label = "storage";
+			reg = <0x7c000 DT_SIZE_K(16)>;
+		};	};
 };
 
 
@@ -136,7 +140,7 @@
 		reset-gpios = <&gpio1 10 GPIO_ACTIVE_LOW>;
 		busy-gpios = <&gpio1 11 0>;
 		/*antenna-enable-gpios = <&gpio1 7 0>;*/
-		dio1-gpios = <&gpio1 8 0>;  /* This is the IRQ gpio.  Documented as DIO9 in the LR1110 hardware spec */
+		dio9-gpios = <&gpio1 8 0>;  /* This is the IRQ gpio.  Documented as DIO9 in the LR1110 hardware spec */
 		nss-gpios = <&gpio1 12 (GPIO_ACTIVE_LOW)>;
 		radio-enable-gpios = <&gpio1 0 0>;
 		spi-max-frequency = <4000000>;
