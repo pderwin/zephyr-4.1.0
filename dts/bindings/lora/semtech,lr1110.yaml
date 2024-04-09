@@ -1,4 +1,6 @@
 # Copyright (c) 2020 Andreas Sandberg
+# Copyright (c) 2024 Phil Erwin
+#
 # SPDX-License-Identifier: Apache-2.0
 
 description: Semtech LR1110 LoRa Modem
@@ -12,5 +14,5 @@ properties:
       required: true
     busy-gpios:
       required: true
-    dio1-gpios:
+    dio9-gpios:
       required: true

@@ -1,5 +1,7 @@
 # Copyright (c) 2019 Manivannan Sadhasivam
 # Copyright (c) 2020 Andreas Sandberg
+# Copyright (c) 2024 Phil Erwin
+#
 # SPDX-License-Identifier: Apache-2.0
 
 include: spi-device.yaml
@@ -52,11 +54,11 @@ properties:
       description: |
         NSS pin to LR1110 module
 
-    dio1-gpios:
+    dio9-gpios:
       type: phandle-array
       required: true
       description: |
-        GPIO connected to DIO1. This GPIO will be used as a generic
+        GPIO connected to DIO9. This GPIO will be used as a generic
         IRQ line from the chip.
 
     dio2-tx-enable:
@@ -81,8 +83,3 @@ properties:
       description: |
         Startup delay to let the TCXO stabilize after TCXO power on.
 
-    vdd-sensor-en-gpios:
-      type: phandle-array
-      required: false
-      description: |
-         GPIO that needs to be set to enable the SigSense board.
