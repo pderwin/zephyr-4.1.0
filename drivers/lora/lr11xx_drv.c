@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 #include <zephyr/kernel.h>
+#include <zephyr/drivers/trace.h>
 #include "lr11xx_drv.h"
 #include "lr11xx_gpio.h"
 #include "lr11xx_hal.h"
@@ -71,6 +72,8 @@ static const struct lora_driver_api lr11xx_lora_api = {
  *-------------------------------------------------------------------------*/
 void lr11xx_drv_lna_disable (void)
 {
+   TRACE(TAG_LR11XX_DRV_LNA_DISABLE);
+
    printf("%s %d \n", __func__,__LINE__);
    lr11xx_gpio_lna_ctl_disable();
 }
@@ -88,6 +91,8 @@ void lr11xx_drv_lna_disable (void)
  *-------------------------------------------------------------------------*/
 void lr11xx_drv_lna_enable (void)
 {
+   TRACE(TAG_LR11XX_DRV_LNA_ENABLE);
+
    printf("%s %d \n", __func__,__LINE__);
    lr11xx_gpio_lna_ctl_enable();
 }

@@ -216,8 +216,6 @@ lr11xx_hal_status_t lr11xx_hal_direct_read( const void *context, uint8_t* data, 
  *-------------------------------------------------------------------------*/
 lr11xx_hal_status_t lr11xx_hal_reset( const void* context )
 {
-   printk("%s: Resetting radio\n", __func__);
-
    lr11xx_gpio_reset(&dev_data);
 
    /* Device transitions to standby on reset */

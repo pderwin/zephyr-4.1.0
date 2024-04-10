@@ -27,6 +27,8 @@ static void
  *-------------------------------------------------------------------------*/
 static void timer_callback (struct k_timer *tmr)
 {
+   TRACE2(TAG_TIMER_CALLBACK, tmr_callback, tmr_context);
+
    tmr_callback(tmr_context);
 }
 
