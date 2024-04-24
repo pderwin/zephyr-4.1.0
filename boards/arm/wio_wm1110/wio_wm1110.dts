@@ -21,10 +21,22 @@
 
 	leds {
 		compatible = "gpio-leds";
+
+		btn1: btn1 {
+			gpios = <&gpio0 23 GPIO_ACTIVE_LOW>;
+			label = "BTN1";
+			};
+
+		btn2: btn2 {
+			gpios = <&gpio0 25 GPIO_ACTIVE_LOW>;
+			label = "BTN2";
+			};
+
 		ledg: led_g {
 			gpios = <&gpio0 13 GPIO_ACTIVE_LOW>;
 			label = "Green LED";
-		};
+			};
+
 		ledr: led_r {
 			gpios = <&gpio0 14 GPIO_ACTIVE_LOW>;
 			label = "Red LED";
@@ -43,11 +55,32 @@
 			gpios = <&gpio0 22 (GPIO_ACTIVE_LOW)>;
 			label = "D0";
 		};
+
+		d1: d1 {
+			gpios = <&gpio0 24 (GPIO_ACTIVE_LOW)>;
+			label = "D1";
+		};
+
+		d2: d2 {
+			gpios = <&gpio0 17 (GPIO_ACTIVE_LOW)>;
+			label = "D2";
+		};
+		d3: d3 {
+			gpios = <&gpio0 16 (GPIO_ACTIVE_LOW)>;
+			label = "D3";
+		};
+		d4: d4 {
+			gpios = <&gpio0 15 (GPIO_ACTIVE_LOW)>;
+			label = "D4";
+		};
+		d5: d5 {
+			gpios = <&gpio1 9 (GPIO_ACTIVE_HIGH)>;
+			label = "D5";
+		};
 		d6: d6 {
 			gpios = <&gpio1 4 ( GPIO_PULL_UP )>;
 			label = "D6";
 		};
-
 		d7: d7 {
 			gpios = <&gpio1 3 ( GPIO_PULL_UP )>;
 			label = "D7";
@@ -56,6 +89,7 @@
 
 	aliases {
 		accel0                = &lis3dh;
+		alert		      = &d5;
 		driveway-sensor       = &d6;
 		ledg                  = &ledg;
 		ledr                  = &ledr;
