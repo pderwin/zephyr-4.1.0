@@ -248,6 +248,40 @@ lr11xx_hal_status_t lr11xx_hal_direct_read( const void *context, uint8_t* data, 
 
 /*-------------------------------------------------------------------------
  *
+ * name:
+ *
+ * description:
+ *
+ * input:
+ *
+ * output:
+ *
+ *-------------------------------------------------------------------------*/
+void lr11xx_drv_lna_disable (void)
+{
+   printf("%s %d \n", __func__,__LINE__);
+   lr11xx_gpio_lna_ctl_disable();
+}
+
+/*-------------------------------------------------------------------------
+ *
+ * name:
+ *
+ * description:
+ *
+ * input:
+ *
+ * output:
+ *
+ *-------------------------------------------------------------------------*/
+void lr11xx_drv_lna_enable (void)
+{
+   printf("%s %d \n", __func__,__LINE__);
+   lr11xx_gpio_lna_ctl_enable();
+}
+
+/*-------------------------------------------------------------------------
+ *
  * name:        lr11xx_hal_config_radio_irq
  *
  * description: called from  smtc_modem_hal_irq_config_radio_irq() to
@@ -393,7 +427,7 @@ BUILD_ASSERT(DT_NODE_HAS_STATUS(DEFAULT_RADIO_NODE,	okay),
  * output:
  *
  *-------------------------------------------------------------------------*/
-const void *lr11xx_hal_get_radio_context ( void )
+const void *lr11xx_drv_radio_context_get ( void )
 {
    return device_get_binding(DEFAULT_RADIO);
 }
@@ -449,7 +483,7 @@ static void op_mode_set( const void *context, const op_mode_e op_mode )
  *-------------------------------------------------------------------------*/
 uint32_t lr11xx_hal_read_busy_pin (const void *context)
 {
-   return lr11xx_is_busy(&dev_data);
+   return lr11xx_gpio_busy(&dev_data);
 }
 
 #define WAIT_USECS (10)
@@ -472,7 +506,7 @@ static lr11xx_hal_status_t wait_on_busy( const void* context )
       secs  = 0,
       usecs = 0;
 
-   while (lr11xx_is_busy(&dev_data)) {
+   while (lr11xx_gpio_busy(&dev_data)) {
 
       k_busy_wait( WAIT_USECS );
 

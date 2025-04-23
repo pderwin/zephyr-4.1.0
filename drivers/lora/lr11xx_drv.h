@@ -48,6 +48,12 @@ void lr11xx_CS_wakeup(struct lr11xx_data *dev_data);
 
 bool lr11xx_is_busy(struct lr11xx_data *dev_data);
 
+void lr11xx_drv_lna_disable (void);
+void lr11xx_drv_lna_enable  (void);
+
+const void
+    *lr11xx_drv_radio_context_get (void);
+
 void lr11xx_drv_radio_irq_config( void ( *callback )( void* context ), void* context );
 void lr11xx_drv_radio_irq_disable( void );
 void lr11xx_drv_radio_irq_enable( void );

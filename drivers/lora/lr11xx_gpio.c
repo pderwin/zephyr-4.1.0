@@ -9,10 +9,11 @@
 #include "lr11xx_drv.h"
 #include "lr11xx_gpio.h"
 
-static const struct gpio_dt_spec gpio_reset = GPIO_DT_SPEC_INST_GET(0, reset_gpios);
-static const struct gpio_dt_spec gpio_busy  = GPIO_DT_SPEC_INST_GET(0, busy_gpios);
-static const struct gpio_dt_spec gpio_dio9  = GPIO_DT_SPEC_INST_GET(0, dio9_gpios);
-static const struct gpio_dt_spec gpio_nss   = GPIO_DT_SPEC_INST_GET(0, nss_gpios);
+static const struct gpio_dt_spec gpio_reset   = GPIO_DT_SPEC_INST_GET(0, reset_gpios);
+static const struct gpio_dt_spec gpio_busy    = GPIO_DT_SPEC_INST_GET(0, busy_gpios);
+static const struct gpio_dt_spec gpio_dio9    = GPIO_DT_SPEC_INST_GET(0, dio9_gpios);
+static const struct gpio_dt_spec gpio_nss     = GPIO_DT_SPEC_INST_GET(0, nss_gpios);
+static const struct gpio_dt_spec gpio_lna_ctl = GPIO_DT_SPEC_INST_GET(0, lna_ctl_gpios);
 
 /*-------------------------------------------------------------------------
  *
@@ -32,6 +33,38 @@ void lr11xx_gpio_reset(struct lr11xx_data *dev_data)
    gpio_pin_set_dt(&gpio_reset, 1);
    k_sleep(K_MSEC(1));
    gpio_pin_set_dt(&gpio_reset, 0);
+}
+
+/*-------------------------------------------------------------------------
+ *
+ * name:        lr11xx_gpio_lna_ctl_disable
+ *
+ * description:
+ *
+ * input:
+ *
+ * output:
+ *
+ *-------------------------------------------------------------------------*/
+void lr11xx_gpio_lna_ctl_disable (void)
+{
+   gpio_pin_set_dt(&gpio_lna_ctl, 0);
+}
+
+/*-------------------------------------------------------------------------
+ *
+ * name:        lr11xx_gpio_lna_ctl_enable
+ *
+ * description:
+ *
+ * input:
+ *
+ * output:
+ *
+ *-------------------------------------------------------------------------*/
+void lr11xx_gpio_lna_ctl_enable (void)
+{
+   gpio_pin_set_dt(&gpio_lna_ctl, 1);
 }
 
 /*-------------------------------------------------------------------------
@@ -110,7 +143,18 @@ void lr11xx_CS_wakeup(struct lr11xx_data *dev_data)
     */
 }
 
-bool lr11xx_is_busy(struct lr11xx_data *dev_data)
+/*-------------------------------------------------------------------------
+ *
+ * name:        lr11xx_gpio_is_busy
+ *
+ * description:
+ *
+ * input:
+ *
+ * output:
+ *
+ *-------------------------------------------------------------------------*/
+bool lr11xx_gpio_busy( struct lr11xx_data *dev_data )
 {
    uint32_t rc;
 
@@ -119,7 +163,7 @@ bool lr11xx_is_busy(struct lr11xx_data *dev_data)
    return rc;
 }
 
-uint32_t lr11xx_get_dio9_pin_state(struct lr11xx_data *dev_data)
+uint32_t AAlr11xx_get_dio9_pin_state(struct lr11xx_data *dev_data)
 {
    return gpio_pin_get_dt(&gpio_dio9) > 0 ? 1U : 0U;
 }
@@ -205,9 +249,10 @@ int lr11xx_gpio_init(const struct device *dev)
     */
    radio_device = dev;
 
-   if (gpio_pin_configure_dt(&gpio_reset, GPIO_OUTPUT_ACTIVE) ||
-       gpio_pin_configure_dt(&gpio_busy, GPIO_INPUT) ||
-       gpio_pin_configure_dt(&gpio_dio9, GPIO_INPUT)) {
+   if (gpio_pin_configure_dt(&gpio_reset,   GPIO_OUTPUT_ACTIVE)  ||
+       gpio_pin_configure_dt(&gpio_busy,    GPIO_INPUT)          ||
+       gpio_pin_configure_dt(&gpio_dio9,    GPIO_INPUT)          ||
+       gpio_pin_configure_dt(&gpio_lna_ctl, GPIO_OUTPUT_INACTIVE )) {
       printk("%s: GPIO configuration failed.", __func__);
       return -EIO;
    }

@@ -28,6 +28,12 @@ properties:
       description: |
         GPIO connected to the modem's BUSY signal.
 
+    lna-ctl-gpios:
+      type: phandle-array
+      required: false
+      description: |
+        low noise amplifier.
+
     antenna-enable-gpios:
       type: phandle-array
       required: false

@@ -137,6 +137,7 @@
 		compatible = "semtech,lr1110";
 		reg = <0>;
 		label = "lr1110";
+		lna-ctl-gpios = <&gpio1 5 GPIO_ACTIVE_HIGH>;
 		reset-gpios = <&gpio1 10 GPIO_ACTIVE_LOW>;
 		busy-gpios = <&gpio1 11 0>;
 		/*antenna-enable-gpios = <&gpio1 7 0>;*/
