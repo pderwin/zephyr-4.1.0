@@ -1,0 +1,7 @@
+board:
+  name: wio_wm1110
+  full_name: Wio Wm1110
+  vendor: seeed
+  socs:
+  # Physical nRF52840 SoC on PCA10056
+  - name: nrf52840

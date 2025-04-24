@@ -1,11 +1,9 @@
 identifier: wio_wm1110
-
 name:   Wio Wm1110
 type:   mcu
 arch:   arm
 ram:    256
 flash:  1024
-
 toolchain:
   - zephyr
   - gnuarmemb
